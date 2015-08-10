@@ -1,0 +1,17 @@
+Scenario: Virtual robots are expected to gather treasures and sort the treasures based on a set of user-defined criteria. 
+
+Level Requirements 
+
+One 
+The program should allow the user to select and place different types of treasures (e.g. jewellery, coins, silverware) within an arena and assign each treasure with a score. With a starting point and time also provided by the user, a robot should start with the nearest treasure and gather as many treasures as possible within the given time. The robot will then sort and display the treasures that have been collected according to some criteria defined by the user (e.g. an ascending or descending order of scores). (Hint: Each treasure should have a name, type and a score.)
+
+
+Two
+The program should allow the user to select and place different types of treasures (e.g. jewellery, coins, silverware) within an arena, provide a brief description for each treasure and assign each treasure with a score. With a starting point, time and a wish list of treasures to find, also provided by the user, a robot should start with the nearest treasure and gather as many treasures that are required on the list as possible within the given time. When the robot stops at any of the treasures on the wish list, the information about the treasure should be displayed on the screen.
+The robot will then sort and display the treasures that have been collected according to its scores in an ascending or descending order (defined by the user) for each type.
+(Hint: Each treasure should have a name, type, descriptions and a score.) 
+
+
+Three 
+The program should allow the user to select and place different types of treasures (e.g. jewellery, coins, silverware) and a number of hidden traps (randomly generated) within an arena, provide a brief description for each treasure and assign each treasure with a score. With a starting point, time and a wish list of treasures to find, also provided by the user, a robot should start with the nearest treasure and gather as many treasures that are required on the list as possible within the given time. When the robot stops at any of the treasures on the wish list, the information about the treasure should be displayed on the screen. Furthermore, each time the robot falls into a hidden trap during the treasure hunt, the robot will lose the last treasure it has collected. The treasures that have been collected should firstly be displayed in an unsorted order. The robot will then show how the treasures (according to their scores in an ascending or descending order defined by the user) are sorted in an animation, based on a user-defined sorting algorithm (e.g. bubble sort). Any other innovative features may also be included. 
+(Hint: Each treasure should have a name, type, descriptions and a score.)
