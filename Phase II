@@ -1,0 +1,173 @@
+update()#Initial update of screen
+
+count = 20 # Limit the treasures placed
+clock = pygame.time.Clock()
+
+coordinates = []
+botx = 100
+boty = 100
+
+    
+#While the program is running
+while True:
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: #Ends the program when quit
+            pygame.quit()
+            sys.exit()
+
+        elif event.type == pygame.MOUSEBUTTONUP and drag: #Determines the location of the robot when clicked and dragged
+            (mouseX, mouseY) = pygame.mouse.get_pos()
+            for i in range(len(robots)):
+                if robots[i].position() == collidedWith[1]:
+                    robots[i].drag(mouseX, mouseY)
+            update()
+            update2()
+            drag = False
+            s = None
+
+        elif event.type == pygame.MOUSEBUTTONDOWN: #Places the image of the robot at the mouse position
+            pos = pygame.mouse.get_pos()
+            for s in Robot.tR:
+                if s[1].collidepoint(pos):
+                    drag = True
+                    collidedWith = s
+
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1 and count > 0: # When 1 is clicked, it will create an instance of treasure type 1 at mouse location
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure1(mouseX,mouseY).create()
+                coordinates.append(pygame.mouse.get_pos())
+                #print coordinates
+                items.append(1)
+                count = count - 1
+                #t1_count=t1_count+1
+                update2()
+
+            if event.key == pygame.K_2 and count > 0: # When 2 is clicked, it will create an instance of treasure type 2 at mouse location
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure2(mouseX,mouseY).create()
+                coordinates.append(pygame.mouse.get_pos())
+                #print coordinates
+                items.append(2)
+                count = count -1
+                #t2_count=t2_count+1
+                update2()
+
+            if event.key == pygame.K_3 and count > 0: # When 3 i clicked, it will create an instance of treasure type 3 at mouse location
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure3(mouseX,mouseY).create()
+                coordinates.append(pygame.mouse.get_pos())
+                #print coordinates
+                items.append(3)
+                count = count - 1
+                #t3_count=t3_count+1
+                update2()
+            #total_count=t1_count+t2_count+t3_count
+            #print total_count
+
+            if event.key == pygame.K_SPACE: # When space is clicked the program will start to collect treasures
+                shortlist = []
+                j=0
+                abort_after = timer_value
+                start = time.time()
+                for k in range(1, len(items) + 1 ):
+                    delta = time.time() - start
+#                    print time.time()
+                    if delta >= abort_after:
+                        break
+                    timer_value = int(time_reference - delta)
+                    update()
+                    short_array = shortest(botx,boty,coordinates)
+                    temp = shortest(botx,boty,coordinates)
+                    # print temp
+                    # print shortlist
+                    # print coordinates
+                    location = short_array[0]
+                    index = short_array[1]
+                    shortlist.append(location)
+                    coordinates.remove(coordinates[index])
+                    type_treasure = items[index]
+                    items.remove(items[index])
+                    if ( shortlist[j][0] < botx and shortlist[j][1] < boty) :
+                        for i in range(1, (boty) - shortlist[j][1] - 5  ):
+                            #move up
+                            R1.move( 0, -1)
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                        for i in range(1, (botx) - shortlist[j][0] - 5 ):
+#                            left
+                            R1.move( -1, 0)
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                    elif (shortlist[j][0] < botx and shortlist[j][1] > boty):
+                        for i in range(1, shortlist[j][1] - (boty) - 5  ):
+#                            right
+                            R1.move( 0, 1)
+
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                        for i in range(1, (botx) - shortlist[j][0] - 5 ):
+#                            left
+                            R1.move( -1, 0)
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                    elif ( shortlist[j][0] > botx and shortlist[j][1] < boty ):
+                        for i in range(1, (boty) - shortlist[j][1] - 5  ):
+#                            up
+                            R1.move( 0, -1)
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                        for i in range(1, shortlist[j][0] - (botx) - 5 ):
+                            R1.move( 1, 0)
+
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                    else:
+                        for i in range(1, shortlist[j][1] - (boty) - 5 ):
+
+                            R1.move( 0, 1)
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                        for i in range(1, shortlist[j][0] - (botx) - 5 ):
+                            R1.move( 1, 0)
+        #                    time.sleep(0.1)
+                            update()
+                            update2()
+                    if(type_treasure == 1):
+                        Treasure1(location[0], location[1]).remove()
+                    if(type_treasure == 2):
+                        Treasure2(location[0], location[1]).remove()
+                    if(type_treasure == 3):
+                        Treasure3(location[0], location[1]).remove()
+                    global_score += tvalue[type_treasure - 1]
+                    update()
+                    update2()
+                    tcount[type_treasure -1 ] += 1
+                    botx = shortlist[j][0]
+                    boty = shortlist[j][1]
+                    j=j+1
+    #                R1.move(50, 0)
+                    R1=Robot(botx-5,boty-5) #Create robot
+                    R1.create()
+                    robots = [R1]
+                    update()
+                    length = len(tvalue)
+                    points = 0
+                    msg = ""
+                for i in range(length):
+                    points += tvalue[i] * tcount[i]
+                    msg += "Treasure" + str(int(i+1)) + ": " + str(tvalue[i]) + " X " + str(tcount[i]) + " = " +str(tvalue[i] * tcount[i]) + "\n"
+                msg += "Total Points = " + str(points) + "\n"
+                easygui.msgbox(msg, title="Score")
+
+            if event.key == pygame.K_ESCAPE: # When escape is clicked the program will stop
+                pygame.quit()
+                sys.exit()
